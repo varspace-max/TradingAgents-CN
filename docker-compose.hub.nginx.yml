@@ -16,7 +16,7 @@ version: '3.8'
 services:
   # MongoDB数据库
   mongodb:
-    image: mongo:4.4
+    image: mongo:7.0
     container_name: tradingagents-mongodb
     restart: unless-stopped
     ports:
@@ -41,7 +41,7 @@ services:
 
   # Redis缓存
   redis:
-    image: redis:7-alpine
+    image: redis:7.0.0
     container_name: tradingagents-redis
     restart: unless-stopped
     ports:
