@@ -5,15 +5,9 @@
 
     <!-- 主要内容区域 -->
     <router-view v-slot="{ Component, route }">
-      <transition
-        :name="(route?.meta?.transition as string) || 'fade'"
-        mode="out-in"
-        appear
-      >
-        <keep-alive :include="keepAliveComponents">
-          <component :is="Component" :key="route?.fullPath || 'default'" />
-        </keep-alive>
-      </transition>
+      <keep-alive :include="keepAliveComponents">
+        <component :is="Component" :key="getComponentKey(route)" />
+      </keep-alive>
     </router-view>
 
     <!-- 配置向导 -->
@@ -27,16 +21,30 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage } from 'element-plus'
+import { useRoute } from 'vue-router'
 import NetworkStatus from '@/components/NetworkStatus.vue'
 import axios from 'axios'
 import { configApi } from '@/api/config'
 
+const route = useRoute()
+
 // 需要缓存的组件
 const keepAliveComponents = computed(() => [
+  'AppLayout', // 缓存布局组件，避免重新渲染
   'Dashboard',
   'StockScreening',
   'AnalysisHistory'
 ])
+
+// 计算组件的 key：对于 /app 路由，使用固定的 key 确保 BasicLayout 不会重新创建
+const getComponentKey = (route: any) => {
+  // 如果是 /app 路由或其子路由，使用固定的 'AppLayout' 作为 key
+  if (route.path.startsWith('/app')) {
+    return 'AppLayout'
+  }
+  // 其他路由使用路由的 name 或 path
+  return route.name || route.path || 'default'
+}
 
 // 配置向导
 const showConfigWizard = ref(false)

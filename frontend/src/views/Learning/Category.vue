@@ -223,7 +223,7 @@ const articles = computed(() => {
 })
 
 const goBack = () => {
-  router.push('/learning')
+  router.push('/app/learning')
 }
 
 const openArticle = (articleId: string) => {

@@ -50,7 +50,7 @@ const userRole = computed(() => {
 const handleCommand = async (command: string) => {
   switch (command) {
     case 'settings':
-      router.push('/settings')
+      router.push('/app/settings')
       break
     case 'logout':
       await authStore.logout()

@@ -496,7 +496,8 @@ const updateSectionFromRoute = () => {
   const path = route.path
   const tab = route.query.tab as string
 
-  if (path === '/settings') {
+  // 支持 /app/settings 和 /settings 两种路径格式
+  if (path === '/app/settings' || path === '/settings') {
     // 个人设置页面
     currentSection.value = 'personal'
     // 根据 tab 参数切换标签
@@ -505,24 +506,30 @@ const updateSectionFromRoute = () => {
     } else {
       activeTab.value = 'general'
     }
-  } else if (path === '/settings/config') {
+  } else if (path === '/app/settings/config' || path === '/settings/config') {
     currentSection.value = 'config'
     activeTab.value = 'config'
-  } else if (path === '/settings/usage') {
+  } else if (path === '/app/settings/usage' || path === '/settings/usage') {
     currentSection.value = 'config'
     activeTab.value = 'usage'
-  } else if (path === '/settings/cache') {
+  } else if (path === '/app/settings/cache' || path === '/settings/cache') {
     currentSection.value = 'config'
     activeTab.value = 'cache'
-  } else if (path === '/settings/database') {
+  } else if (path === '/app/settings/database' || path === '/settings/database') {
     currentSection.value = 'admin'
     activeTab.value = 'database'
-  } else if (path === '/settings/logs') {
+  } else if (path === '/app/settings/logs' || path === '/settings/logs') {
     currentSection.value = 'admin'
     activeTab.value = 'logs'
-  } else if (path === '/settings/sync') {
+  } else if (path === '/app/settings/system-logs' || path === '/settings/system-logs') {
+    currentSection.value = 'admin'
+    activeTab.value = 'system-logs'
+  } else if (path === '/app/settings/sync' || path === '/settings/sync') {
     currentSection.value = 'admin'
     activeTab.value = 'sync'
+  } else if (path === '/app/settings/scheduler' || path === '/settings/scheduler') {
+    currentSection.value = 'admin'
+    activeTab.value = 'scheduler'
   }
 }
 
@@ -585,6 +592,13 @@ watch(() => authStore.user, (newUser) => {
 // 方法
 const handleMenuSelect = (index: string) => {
   activeTab.value = index
+  // 更新 URL 的 query 参数（仅对个人设置页面）
+  if (currentSection.value === 'personal') {
+    router.push({
+      path: route.path,
+      query: { tab: index }
+    })
+  }
 }
 
 const handleThemeChange = (theme: string) => {
@@ -686,27 +700,27 @@ const saveNotificationSettings = async () => {
 
 // 导航函数
 const goToConfigManagement = () => {
-  router.push('/settings/config')
+  router.push('/app/settings/config')
 }
 
 const goToUsageStatistics = () => {
-  router.push('/settings/usage')
+  router.push('/app/settings/usage')
 }
 
 const goToCacheManagement = () => {
-  router.push('/settings/cache')
+  router.push('/app/settings/cache')
 }
 
 const goToDatabaseManagement = () => {
-  router.push('/settings/database')
+  router.push('/app/settings/database')
 }
 
 const goToOperationLogs = () => {
-  router.push('/settings/logs')
+  router.push('/app/settings/logs')
 }
 
 const goToMultiSourceSync = () => {
-  router.push('/settings/sync')
+  router.push('/app/settings/sync')
 }
 
 // 修改密码相关

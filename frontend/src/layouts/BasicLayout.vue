@@ -56,15 +56,9 @@
       <main class="main-content">
         <div class="content-wrapper">
           <router-view v-slot="{ Component, route }">
-            <transition
-              :name="route.meta.transition || 'fade'"
-              mode="out-in"
-              appear
-            >
-              <keep-alive :include="keepAliveComponents">
-                <component :is="Component" :key="route.fullPath" />
-              </keep-alive>
-            </transition>
+            <keep-alive :include="keepAliveComponents">
+              <component :is="Component" :key="route.fullPath" />
+            </keep-alive>
           </router-view>
         </div>
       </main>
@@ -89,6 +83,11 @@ import Breadcrumb from '@/components/Layout/Breadcrumb.vue'
 import HeaderActions from '@/components/Layout/HeaderActions.vue'
 import AppFooter from '@/components/Layout/AppFooter.vue'
 import { Expand, Fold } from '@element-plus/icons-vue'
+
+// 定义组件名称，用于 keep-alive
+defineOptions({
+  name: 'AppLayout'
+})
 
 const appStore = useAppStore()
 const route = useRoute()

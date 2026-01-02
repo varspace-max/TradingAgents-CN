@@ -19,123 +19,92 @@ NProgress.configure({
 const routes: RouteRecordRaw[] = [
   {
     path: '/',
-    redirect: '/dashboard'
+    redirect: '/app/dashboard'
   },
   // 兼容文档链接：将 /paper/<name>.md 重定向到学习中心文章路由
   {
     path: '/paper/:name.md',
     name: 'PaperMdRedirect',
-    redirect: (to) => `/learning/article/${to.params.name as string}`,
+    redirect: (to) => `/app/learning/article/${to.params.name as string}`,
     meta: { title: '文档跳转', hideInMenu: true, requiresAuth: false }
   },
+  // 统一布局路由：所有需要布局的页面都作为 /app 的子路由
   {
-    path: '/dashboard',
-    name: 'Dashboard',
+    path: '/app',
+    name: 'AppLayout',
     component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '仪表板',
-      icon: 'Dashboard',
-      requiresAuth: true,
-      transition: 'fade'
-    },
+    redirect: '/app/dashboard',
     children: [
       {
-        path: '',
-        name: 'DashboardHome',
+        path: 'dashboard',
+        name: 'Dashboard',
         component: () => import('@/views/Dashboard/index.vue'),
         meta: {
           title: '仪表板',
+          icon: 'Dashboard',
+          requiresAuth: true,
+          transition: 'fade'
+        }
+      },
+      {
+        path: 'analysis',
+        redirect: '/app/analysis/single'
+      },
+      {
+        path: 'analysis/single',
+        name: 'SingleAnalysis',
+        component: () => import('@/views/Analysis/SingleAnalysis.vue'),
+        meta: {
+          title: '单股分析',
+          icon: 'TrendCharts',
           requiresAuth: true
         }
-      }
-    ]
-  },
-  {
-    path: '/analysis',
-    name: 'Analysis',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    redirect: '/analysis/single',
-    children: [
-      {
-        path: 'single',
-        name: 'SingleAnalysis',
-        component: () => import('@/views/Analysis/SingleAnalysis.vue')
       },
       {
-        path: 'batch',
+        path: 'analysis/batch',
         name: 'BatchAnalysis',
-        component: () => import('@/views/Analysis/BatchAnalysis.vue')
+        component: () => import('@/views/Analysis/BatchAnalysis.vue'),
+        meta: {
+          title: '批量分析',
+          icon: 'TrendCharts',
+          requiresAuth: true
+        }
       },
-
-    ]
-  },
-  {
-    path: '/screening',
-    name: 'StockScreening',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '股票筛选',
-      icon: 'Search',
-      requiresAuth: true,
-      transition: 'slide-up'
-    },
-    children: [
       {
-        path: '',
-        name: 'StockScreeningHome',
+        path: 'screening',
+        name: 'StockScreening',
         component: () => import('@/views/Screening/index.vue'),
         meta: {
           title: '股票筛选',
-          requiresAuth: true
+          icon: 'Search',
+          requiresAuth: true,
+          transition: 'slide-up'
         }
-      }
-    ]
-  },
-
-  {
-    path: '/favorites',
-    name: 'Favorites',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '我的自选股',
-      icon: 'Star',
-      requiresAuth: true,
-      transition: 'slide-up'
-    },
-    children: [
+      },
       {
-        path: '',
-        name: 'FavoritesHome',
+        path: 'favorites',
+        name: 'Favorites',
         component: () => import('@/views/Favorites/index.vue'),
         meta: {
           title: '我的自选股',
-          requiresAuth: true
+          icon: 'Star',
+          requiresAuth: true,
+          transition: 'slide-up'
         }
-      }
-    ]
-  },
-  {
-    path: '/learning',
-    name: 'Learning',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '学习中心',
-      icon: 'Reading',
-      requiresAuth: false,
-      transition: 'fade'
-    },
-    children: [
+      },
       {
-        path: '',
+        path: 'learning',
         name: 'LearningHome',
         component: () => import('@/views/Learning/index.vue'),
         meta: {
           title: '学习中心',
-          requiresAuth: false
+          icon: 'Reading',
+          requiresAuth: false,
+          transition: 'fade'
         }
       },
       {
-        path: ':category',
+        path: 'learning/:category',
         name: 'LearningCategory',
         component: () => import('@/views/Learning/Category.vue'),
         meta: {
@@ -144,86 +113,50 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'article/:id',
+        path: 'learning/article/:id',
         name: 'LearningArticle',
         component: () => import('@/views/Learning/Article.vue'),
         meta: {
           title: '文章详情',
           requiresAuth: false
         }
-      }
-    ]
-  },
-  {
-    path: '/stocks',
-    name: 'Stocks',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '股票详情',
-      icon: 'TrendCharts',
-      requiresAuth: true,
-      hideInMenu: true,
-      transition: 'fade'
-    },
-    children: [
+      },
       {
-        path: ':code',
+        path: 'stocks/:code',
         name: 'StockDetail',
         component: () => import('@/views/Stocks/Detail.vue'),
         meta: {
           title: '股票详情',
+          icon: 'TrendCharts',
           requiresAuth: true,
           hideInMenu: true,
           transition: 'fade'
         }
-      }
-    ]
-  },
-
-
-  {
-    path: '/tasks',
-    name: 'TaskCenter',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '任务中心',
-      icon: 'List',
-      requiresAuth: true,
-      transition: 'slide-up'
-    },
-    children: [
+      },
       {
-        path: '',
-        name: 'TaskCenterHome',
+        path: 'tasks',
+        name: 'TaskCenter',
         component: () => import('@/views/Tasks/TaskCenter.vue'),
-        meta: { title: '任务中心', requiresAuth: true }
-      }
-    ]
-  },
-  { path: '/queue', redirect: '/tasks' },
-  { path: '/analysis/history', redirect: '/tasks?tab=completed' },
-  {
-    path: '/reports',
-    name: 'Reports',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '分析报告',
-      icon: 'Document',
-      requiresAuth: true,
-      transition: 'fade'
-    },
-    children: [
+        meta: {
+          title: '任务中心',
+          icon: 'List',
+          requiresAuth: true,
+          transition: 'slide-up'
+        }
+      },
       {
-        path: '',
+        path: 'reports',
         name: 'ReportsHome',
         component: () => import('@/views/Reports/index.vue'),
         meta: {
           title: '分析报告',
-          requiresAuth: true
+          icon: 'Document',
+          requiresAuth: true,
+          transition: 'fade'
         }
       },
       {
-        path: 'view/:id',
+        path: 'reports/view/:id',
         name: 'ReportDetail',
         component: () => import('@/views/Reports/ReportDetail.vue'),
         meta: {
@@ -232,38 +165,27 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'token',
+        path: 'reports/token',
         name: 'TokenStatistics',
         component: () => import('@/views/Reports/TokenStatistics.vue'),
         meta: {
           title: 'Token统计',
           requiresAuth: true
         }
-      }
-    ]
-  },
-  {
-    path: '/settings',
-    name: 'Settings',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '设置',
-      icon: 'Setting',
-      requiresAuth: true,
-      transition: 'slide-left'
-    },
-    children: [
+      },
       {
-        path: '',
+        path: 'settings',
         name: 'SettingsHome',
         component: () => import('@/views/Settings/index.vue'),
         meta: {
           title: '设置',
-          requiresAuth: true
+          icon: 'Setting',
+          requiresAuth: true,
+          transition: 'slide-left'
         }
       },
       {
-        path: 'config',
+        path: 'settings/config',
         name: 'ConfigManagement',
         component: () => import('@/views/Settings/ConfigManagement.vue'),
         meta: {
@@ -272,7 +194,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'database',
+        path: 'settings/database',
         name: 'DatabaseManagement',
         component: () => import('@/views/System/DatabaseManagement.vue'),
         meta: {
@@ -281,7 +203,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'logs',
+        path: 'settings/logs',
         name: 'OperationLogs',
         component: () => import('@/views/System/OperationLogs.vue'),
         meta: {
@@ -290,7 +212,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'system-logs',
+        path: 'settings/system-logs',
         name: 'LogManagement',
         component: () => import('@/views/System/LogManagement.vue'),
         meta: {
@@ -299,7 +221,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'sync',
+        path: 'settings/sync',
         name: 'MultiSourceSync',
         component: () => import('@/views/System/MultiSourceSync.vue'),
         meta: {
@@ -308,7 +230,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'cache',
+        path: 'settings/cache',
         name: 'CacheManagement',
         component: () => import('@/views/Settings/CacheManagement.vue'),
         meta: {
@@ -317,7 +239,7 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'usage',
+        path: 'settings/usage',
         name: 'UsageStatistics',
         component: () => import('@/views/Settings/UsageStatistics.vue'),
         meta: {
@@ -326,17 +248,48 @@ const routes: RouteRecordRaw[] = [
         }
       },
       {
-        path: 'scheduler',
+        path: 'settings/scheduler',
         name: 'SchedulerManagement',
         component: () => import('@/views/System/SchedulerManagement.vue'),
         meta: {
           title: '定时任务',
           requiresAuth: true
         }
+      },
+      {
+        path: 'paper',
+        name: 'PaperTrading',
+        component: () => import('@/views/PaperTrading/index.vue'),
+        meta: {
+          title: '模拟交易',
+          icon: 'CreditCard',
+          requiresAuth: true,
+          transition: 'slide-up'
+        }
       }
     ]
   },
-
+  // 向后兼容：重定向旧路径到新路径
+  { path: '/dashboard', redirect: '/app/dashboard' },
+  { path: '/analysis', redirect: '/app/analysis/single' },
+  { path: '/analysis/single', redirect: '/app/analysis/single' },
+  { path: '/analysis/batch', redirect: '/app/analysis/batch' },
+  { path: '/analysis/history', redirect: '/app/tasks?tab=completed' },
+  { path: '/screening', redirect: '/app/screening' },
+  { path: '/favorites', redirect: '/app/favorites' },
+  { path: '/learning', redirect: '/app/learning' },
+  { path: '/learning/:category', redirect: (to) => `/app/learning/${to.params.category}` },
+  { path: '/learning/article/:id', redirect: (to) => `/app/learning/article/${to.params.id}` },
+  { path: '/stocks/:code', redirect: (to) => `/app/stocks/${to.params.code}` },
+  { path: '/tasks', redirect: '/app/tasks' },
+  { path: '/queue', redirect: '/app/tasks' },
+  { path: '/reports', redirect: '/app/reports' },
+  { path: '/reports/view/:id', redirect: (to) => `/app/reports/view/${to.params.id}` },
+  { path: '/reports/token', redirect: '/app/reports/token' },
+  { path: '/settings', redirect: '/app/settings' },
+  { path: '/settings/:pathMatch(.*)*', redirect: (to) => `/app/settings/${to.params.pathMatch}` },
+  { path: '/paper', redirect: '/app/paper' },
+  // 不需要布局的路由保持在顶层
   {
     path: '/login',
     name: 'Login',
@@ -347,7 +300,6 @@ const routes: RouteRecordRaw[] = [
       transition: 'fade'
     }
   },
-
   {
     path: '/about',
     name: 'About',
@@ -355,33 +307,10 @@ const routes: RouteRecordRaw[] = [
     meta: {
       title: '关于',
       icon: 'InfoFilled',
-      requiresAuth: false, // 关于页面不需要认证
+      requiresAuth: false,
       transition: 'fade'
     }
   },
-  {
-    path: '/paper',
-    name: 'PaperTrading',
-    component: () => import('@/layouts/BasicLayout.vue'),
-    meta: {
-      title: '模拟交易',
-      icon: 'CreditCard',
-      requiresAuth: true,
-      transition: 'slide-up'
-    },
-    children: [
-      {
-        path: '',
-        name: 'PaperTradingHome',
-        component: () => import('@/views/PaperTrading/index.vue'),
-        meta: {
-          title: '模拟交易',
-          requiresAuth: true
-        }
-      }
-    ]
-  },
-
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
@@ -447,7 +376,7 @@ router.beforeEach(async (to, from, next) => {
 
   // 如果已登录且访问登录页，重定向到仪表板
   if (authStore.isAuthenticated && to.name === 'Login') {
-    next('/dashboard')
+    next('/app/dashboard')
     return
   }
 

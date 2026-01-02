@@ -361,31 +361,31 @@ const paperAccount = ref<PaperAccountSummary | null>(null)
 
 // 方法
 const quickAnalysis = () => {
-  router.push('/analysis/single')
+  router.push('/app/analysis/single')
 }
 
 const goToSingleAnalysis = () => {
-  router.push('/analysis/single')
+  router.push('/app/analysis/single')
 }
 
 const goToBatchAnalysis = () => {
-  router.push('/analysis/batch')
+  router.push('/app/analysis/batch')
 }
 
 const goToScreening = () => {
-  router.push('/screening')
+  router.push('/app/screening')
 }
 
 const goToQueue = () => {
-  router.push('/queue')
+  router.push('/app/tasks')
 }
 
 const goToHistory = () => {
-  router.push('/tasks?tab=completed')
+  router.push('/app/tasks?tab=completed')
 }
 
 const goToLearning = () => {
-  router.push('/learning')
+  router.push('/app/learning')
 }
 
 const viewAnalysis = (analysis: AnalysisTask) => {
@@ -393,8 +393,8 @@ const viewAnalysis = (analysis: AnalysisTask) => {
   if (status === 'completed') {
     router.push({ name: 'ReportDetail', params: { id: analysis.task_id } })
   } else {
-    // 未完成任务跳转到任务中心的“进行中”标签页
-    router.push('/tasks?tab=running')
+    // 未完成任务跳转到任务中心的"进行中"标签页
+    router.push('/app/tasks?tab=running')
   }
 }
 
@@ -471,12 +471,12 @@ const formatTime = (time: string) => {
 
 // 自选股相关方法
 const goToFavorites = () => {
-  router.push('/favorites')
+  router.push('/app/favorites')
 }
 
 const viewStockDetail = (stock: any) => {
   // 可以跳转到股票详情页或分析页
-  router.push(`/analysis/single?stock_code=${stock.stock_code}`)
+  router.push(`/app/analysis/single?stock_code=${stock.stock_code}`)
 }
 
 const getPriceChangeClass = (changePercent: number) => {
@@ -566,7 +566,7 @@ const loadPaperAccount = async () => {
 
 // 跳转到模拟交易页面
 const goToPaperTrading = () => {
-  router.push('/paper')
+  router.push('/app/paper')
 }
 
 // 格式化金额

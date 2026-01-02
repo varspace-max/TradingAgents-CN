@@ -451,7 +451,7 @@ const router = useRouter()
 const buildTime = ref(new Date().toLocaleString('zh-CN'))
 
 const goToAnalysis = () => {
-  router.push('/analysis/single')
+  router.push('/app/analysis/single')
 }
 
 const viewDocumentation = () => {
