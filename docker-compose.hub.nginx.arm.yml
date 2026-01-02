@@ -16,7 +16,7 @@ version: '3.8'
 services:
   # MongoDB数据库
   mongodb:
-    image: mongo:4.4
+    image: mongo:7.0
     platform: linux/arm64  # 显式指定 ARM64 平台
     container_name: tradingagents-mongodb
     restart: unless-stopped
@@ -34,7 +34,7 @@ services:
     networks:
       - tradingagents-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet --username admin --password tradingagents123 --authenticationDatabase admin
       interval: 10s
       timeout: 5s
       retries: 5
@@ -42,7 +42,7 @@ services:
 
   # Redis缓存
   redis:
-    image: redis:7-alpine
+    image: redis:7.0.0
     platform: linux/arm64  # 显式指定 ARM64 平台
     container_name: tradingagents-redis
     restart: unless-stopped
@@ -163,7 +163,7 @@ services:
 
   # Nginx 反向代理
   nginx:
-    image: nginx:alpine
+    image: nginx:1.21.5
     platform: linux/arm64  # 显式指定 ARM64 平台
     container_name: tradingagents-nginx
     restart: unless-stopped
