@@ -33,7 +33,7 @@ services:
     networks:
       - tradingagents-network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet --username admin --password tradingagents123 --authenticationDatabase admin
       interval: 10s
       timeout: 5s
       retries: 5
