@@ -4,21 +4,61 @@
 
 TradingAgents-CN 项目遵循清晰的目录结构规范，确保代码组织有序、易于维护。
 
+> **版本说明**: 本文档适用于 v1.0.0-preview 版本，采用前后端分离架构（FastAPI + Vue 3）。
+
 ## 🏗️ 项目根目录结构
 
 ```
 TradingAgentsCN/
-├── 📁 tradingagents/          # 核心代码包
-├── 📁 web/                    # Web界面代码
-├── 📁 docs/                   # 项目文档
-├── 📁 tests/                  # 所有测试文件
-├── 📁 scripts/                # 工具脚本
-├── 📁 env/                    # Python虚拟环境
-├── 📄 README.md               # 项目说明
-├── 📄 requirements.txt        # 依赖列表
-├── 📄 .env.example           # 环境变量模板
-├── 📄 VERSION                 # 版本号
-└── 📄 CHANGELOG.md           # 更新日志
+├── 📁 app/                    # FastAPI 后端应用（v1.0.0核心）
+│   ├── main.py               # FastAPI 主应用入口
+│   ├── core/                 # 核心配置和基础组件
+│   ├── routers/             # API 路由定义
+│   ├── services/            # 业务逻辑服务层
+│   ├── models/              # 数据模型（MongoDB）
+│   ├── middleware/          # 中间件（认证、日志等）
+│   ├── worker/              # 后台任务处理
+│   └── utils/               # 工具函数
+├── 📁 frontend/              # Vue 3 前端应用（v1.0.0核心）
+│   ├── src/                 # Vue 3 源码
+│   │   ├── views/           # 页面组件
+│   │   ├── components/       # 可复用组件
+│   │   ├── layouts/         # 布局组件
+│   │   ├── router/          # 路由配置
+│   │   ├── stores/          # 状态管理（Pinia）
+│   │   └── api/             # API 接口封装
+│   ├── package.json         # Node.js 依赖
+│   └── vite.config.ts       # Vite 构建配置
+├── 📁 tradingagents/         # 核心代码包（智能体框架）
+│   ├── agents/              # 智能体实现（分析师、研究员、交易员等）
+│   ├── dataflows/           # 数据流处理（数据源、缓存等）
+│   ├── graph/               # LangGraph 图结构
+│   ├── llm_adapters/       # LLM 适配器
+│   ├── tools/               # 工具函数
+│   └── utils/               # 通用工具
+├── 📁 web/                   # 旧版 Web 界面（已废弃，保留兼容）
+├── 📁 cli/                   # 命令行工具
+├── 📁 docs/                  # 项目文档
+├── 📁 tests/                 # 所有测试文件
+├── 📁 scripts/               # 工具脚本
+├── 📁 config/                # 配置文件（日志配置等）
+├── 📁 data/                  # 数据目录（缓存、报告、备份等）
+├── 📁 examples/              # 示例代码
+├── 📁 utils/                 # 根级工具函数
+├── 📁 assets/                # 静态资源（图片等）
+├── 📁 docker/                # Docker 相关配置
+├── 📁 nginx/                 # Nginx 配置
+├── 📁 install/               # 安装相关配置
+├── 📁 logs/                  # 日志文件
+├── 📁 reports/               # 报告文件
+├── 📄 main.py                # 项目入口（兼容旧版本）
+├── 📄 README.md              # 项目说明
+├── 📄 requirements.txt       # Python 依赖列表
+├── 📄 pyproject.toml         # Python 项目配置
+├── 📄 VERSION                # 版本号
+├── 📄 docker-compose.yml     # Docker Compose 配置
+├── 📄 Dockerfile.backend     # 后端 Docker 镜像
+└── 📄 Dockerfile.frontend    # 前端 Docker 镜像
 ```
 
 ## 📋 目录职责说明
